@@ -25,6 +25,12 @@ const previousGenesis=new Set(['e4f6ac4636dd5c545c237fb88b4aa1985aee4dc20dd10e9b
 if(current!==original&&current!==patched&&!previousGenesis.has(hash(current)))throw new Error('Renderer was modified by another installation; no files changed');
 if(args.includes('--check')){console.log(JSON.stringify({action:'preflight',compatible:true,filesChanged:false}));process.exit(0)}
 if(!restoring){try{await fs.writeFile(backup,original,{flag:'wx',mode:0o600})}catch(error){if(error.code!=='EEXIST')throw error}}
+const common=path.join(root,'scripts/common-macos.sh');
+const commonText=await fs.readFile(common,'utf8');
+const nativeBefore='machine_arch="$(/usr/bin/uname -m)"';
+const nativeAfter='machine_arch="$(/usr/bin/arch -arm64 /usr/bin/uname -m)"';
+if(!commonText.includes(nativeBefore)&&!commonText.includes(nativeAfter))throw new Error('Unsupported Dream Skin architecture check');
+await fs.writeFile(common,restoring?commonText.replace(nativeAfter,nativeBefore):commonText.replace(nativeBefore,nativeAfter));
 const next=restoring?original:patched,temporary=target+'.genesis-'+process.pid;
 await fs.writeFile(temporary,next,{flag:'wx',mode:0o600});await fs.rename(temporary,target);
 console.log(JSON.stringify({action:restoring?'restore':'prepare-local-extension',engine:root,sha256:hash(next),backup,debugPortOpened:false,appRestarted:false},null,2));

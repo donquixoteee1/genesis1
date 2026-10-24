@@ -12,3 +12,8 @@ test('Genesis app launches the skin entry and never force restarts Codex',async 
  const icon=await fs.readFile(path.join(dir,'Genesis.app/Contents/Resources/Genesis.icns'));assert.deepEqual(icon,await fs.readFile('integration/dream-skin/Genesis.icns'));assert.match(p.stdout,/新增 Genesis/);
  assert.equal(spawnSync('/bin/bash',['-n'],{input:script}).status,0);
 });
+
+test('Rosetta native architecture query matches the arm64 runtime',{skip:process.platform!=='darwin'||process.arch!=='arm64'},()=>{
+ const result=spawnSync('/usr/bin/arch',['-x86_64','/bin/bash','-c','/usr/bin/arch -arm64 /usr/bin/uname -m'],{encoding:'utf8',timeout:5000});
+ assert.equal(result.status,0,result.stderr);assert.equal(result.stdout.trim(),'arm64');
+});
