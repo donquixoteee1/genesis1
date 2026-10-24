@@ -1,0 +1,12 @@
+node_modules/
+dist/
+artifacts/
+releases/
+.DS_Store
+*.log
+.env
+.env.*
+/distribution/payload/*
+
+/.vercel/
+/distribution/.vercel/

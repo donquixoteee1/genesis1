@@ -1,0 +1,11 @@
+<!doctype html><html><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Blur boundary pixel regression</title><body><div id="app"></div><script type="module">
+import '/src/main.ts';
+const e=window.genesis;e.paused=true;e.suspend();e.time=9.65;await document.fonts.ready;e.draw();
+const canvas=document.querySelector('#ocean'),ctx=canvas.getContext('2d'),box=document.querySelector('.composer').getBoundingClientRect(),bounds=canvas.getBoundingClientRect(),r=e.renderer.composer;
+const withBlur=ctx.getImageData(0,0,canvas.width,canvas.height).data;e.renderer.composer=undefined;e.renderer.render(e.brightness);const sharp=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+const dx=canvas.width/bounds.width,dy=canvas.height/bounds.height;let outside=0,above=0,inside=0,minY=1e9,maxY=-1;
+for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++){const k=(y*canvas.width+x)*4;if(withBlur[k]!==sharp[k]||withBlur[k+1]!==sharp[k+1]||withBlur[k+2]!==sharp[k+2]){const cssX=x/dx,cssY=y/dy;if(cssX<r.x||cssX>=r.x+r.width||cssY<r.y||cssY>=r.y+r.height){outside++;if(cssY<r.y)above++}else inside++;minY=Math.min(minY,cssY);maxY=Math.max(maxY,cssY)}}
+e.renderer.composer=r;e.renderer.render(e.brightness);
+const result={outside,above,inside,changedY:[minY,maxY],mask:r,box:{x:box.x-bounds.x,y:box.y-bounds.y,width:box.width,height:box.height},canvas:{cssWidth:bounds.width,cssHeight:bounds.height,width:canvas.width,height:canvas.height},pass:outside===0&&inside>0};
+const output=document.createElement('output');output.id='pixel-regression';output.textContent=JSON.stringify(result);Object.assign(output.style,{position:'fixed',bottom:'4px',left:'250px',zIndex:99,maxWidth:'1000px',font:'10px monospace',background:'#111',color:'#fff'});document.body.append(output);
+</script></body></html>

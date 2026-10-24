@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GENESIS · 1.5-cycle recording</title></head><body><div id="app"></div><script type="module">
+import '/src/main.ts';
+const style=document.createElement('style');style.textContent='.desktop-shell{width:1440px;height:900px;min-height:900px}.sidebar{width:246px!important}.new-chat-view{margin-top:139.5px!important}.hero h1{font-size:31px!important}.capture-tools{position:fixed;z-index:100;left:1452px;top:28px;width:136px;color:#ccc;font:12px monospace}.capture-tools input{display:block;width:128px;margin-top:12px;background:#333;color:#fff;border:1px solid #777;padding:8px}';document.head.append(style);
+const tools=document.createElement('aside');tools.className='capture-tools';tools.innerHTML='<label for="capture-frame">Capture frame</label><input id="capture-frame" aria-label="Capture frame" type="number" min="0" max="509" value="0"><p id="capture-time">0.000 s</p>';document.body.append(tools);
+const engine=window.genesis;engine.paused=true;engine.suspend();
+await document.fonts.ready;
+const input=tools.querySelector('input');function seek(){const frame=Math.max(0,Math.min(509,Number(input.value)||0));const rect=engine.renderer.canvas.getBoundingClientRect();engine.renderer.resize(rect.width,rect.height);engine.time=frame/30;engine.draw();tools.querySelector('p').textContent=engine.time.toFixed(3)+' s';document.querySelector('canvas').dataset.captureFrame=String(frame)}
+input.addEventListener('input',seek);seek();
+</script></body></html>

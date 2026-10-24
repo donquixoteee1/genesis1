@@ -1,0 +1,3 @@
+import {hash,mix,smooth} from '../ocean/math';
+/** Bounded, seeded random waypoints; no respawn or position jump at segment edges. */
+export function starPosition(id:number,time:number,width:number,height:number){const duration=15+hash(id,2,78)*14,t=time/duration+hash(id,4)*17,segment=Math.floor(t),u=smooth(t-segment),radius=Math.min(48,width*.075);const px=width*(.025+.95*hash(id,7,98)),py=height*(.025+.95*hash(id,8,45));const noise=(axis:number)=>mix(hash(id,segment,axis),hash(id,segment+1,axis),u)*2-1;return {x:Math.max(5,Math.min(width-5,px+noise(81)*radius)),y:Math.max(5,Math.min(height-5,py+noise(83)*radius)),light:.045+Math.pow(.5+.5*Math.sin(time*(.3+hash(id,11)*.6)+hash(id,12)*80),3)*(.18+hash(id,13)*.25)}}

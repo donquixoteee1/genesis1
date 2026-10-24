@@ -1,0 +1,10 @@
+/* Minimal backdrop treatment: native Codex layout and controls remain owned by Codex. */
+html[data-dream-skin] main:is([data-app-shell-main-surface],[data-ds-part="main"],.main-surface,[class*="_MainContentSurface_"]){isolation:isolate;background:#030303!important}
+html[data-dream-skin] [data-ds-part="home"]{background:transparent!important}
+/* The canvas already blurs this rectangle. Keep the outer tint translucent. */
+html[data-dream-skin] main:has([data-testid="home-icon"]) :is(.composer-surface-chrome,[data-ds-part="composer"],[class*="_ComposerLayoutRoot_"],[data-composer-surface-variant][data-composer-radius-variant]){background:rgba(9,9,9,.38)!important;backdrop-filter:none!important}
+/* Codex 26.803+ paints a second opaque surface inside the public composer. */
+html[data-dream-skin] main:has([data-testid="home-icon"]) :is(.composer-surface-chrome,[data-ds-part="composer"],[class*="_ComposerLayoutRoot_"],[data-composer-surface-variant][data-composer-radius-variant]) > [class*="_ComposerLayoutBody_"]{background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important}
+/* The cap also exists without placement/position attributes on some Codex builds. */
+html[data-dream-skin] main:has([data-testid="home-icon"]) :is([data-composer-home-utility-bar-position="above"],[class*="_homeUtilityBar_"],[class*="_ComposerHomeUtilityBar_"]){background:rgba(9,9,9,.38)!important;backdrop-filter:none!important}
+#genesis-dream-background{contain:strict;user-select:none}

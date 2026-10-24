@@ -1,0 +1,25 @@
+const paths:Record<string,string>={
+plus:'<path d="M12 5v14M5 12h14"/>',
+new:'<path d="M14 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-9M14 3l7 7M10 14l2-5 7-7 4 4-7 7-6 1Z"/>',
+search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+folder:'<path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/>',
+chevron:'<path d="m8 10 4 4 4-4"/>',
+arrow:'<path d="M12 19V5m-6 6 6-6 6 6"/>',
+code:'<path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+spark:'<path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/>',
+settings:'<path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/>',
+sidebar:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/>',
+terminal:'<path d="m5 7 5 5-5 5m8 0h6"/>',
+pause:'<path d="M9 5v14M15 5v14"/>',
+play:'<path d="m8 5 11 7-11 7Z"/>',
+wave:'<path d="M2 8c3-5 5 5 8 0s5 5 8 0 4 0 4 0M2 16c3-5 5 5 8 0s5 5 8 0 4 0 4 0"/>',
+close:'<path d="m6 6 12 12M6 18 18 6"/>',
+globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c6 6 6 12 0 18-6-6-6-12 0-18Z"/>',
+mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>',
+check:'<path d="m5 12 4 4L19 6"/>',
+branch:'<circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M6 7v10m12-10v2c0 4-12 0-12 6"/>',
+bug:'<path d="m8 3 2 3m6-3-2 3M3 10h4m10 0h4M3 17h4m10 0h4M12 6v15"/><rect x="7" y="6" width="10" height="15" rx="5"/>',
+book:'<path d="M12 5c-4-2-7-2-10-1v15c4-1 7 0 10 2 3-2 6-3 10-2V4c-3-1-6-1-10 1Zm0 0v16"/>'};
+export function icon(name:string,cls=''){return `<svg class="icon ${cls}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.spark}</svg>`}
+export const codexLogo='<svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="m20 3 14.7 8.5v17L20 37 5.3 28.5v-17L20 3Z" stroke="currentColor" stroke-width="1.6"/><path d="m5.3 11.5 14.7 8.4 14.7-8.4M20 20v17M12.7 7.3l14.6 8.5v8.4l-14.6 8.5M27.3 7.3l-14.6 8.5v8.4l14.6 8.5" stroke="currentColor" stroke-width="1.5"/></svg>';

@@ -1,0 +1,9 @@
+{
+  "schemaVersion":1,
+  "id":"genesis",
+  "name":"GENESIS",
+  "image":"background.png",
+  "appearance":"dark",
+  "art":{"safeArea":"none","taskMode":"off","focusX":0.5,"focusY":0.5},
+  "colors":{"background":"#030303","panel":"#0c0c0c","panelAlt":"#111112","accent":"#c8c8c4","accentAlt":"#deded8","secondary":"#8f969f","highlight":"#e5e5df","text":"#e6e6e2","muted":"#797975","line":"rgba(140,140,130,.2)"}
+}

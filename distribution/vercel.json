@@ -1,0 +1,5 @@
+{
+  "version":2,
+  "builds":[{"src":"api/install.mjs","use":"@vercel/node","config":{"includeFiles":["payload/install.sh"]}},{"src":"robots.txt","use":"@vercel/static"}],
+  "routes":[{"src":"/api/install","dest":"/api/install.mjs"},{"src":"/robots.txt","dest":"/robots.txt"},{"src":"/.*","status":404}]
+}

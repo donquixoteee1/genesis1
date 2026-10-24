@@ -1,0 +1,11 @@
+import {hash,TAU,clamp} from './math';
+import type {EnergyField} from './field';
+import type {AsciiRenderer} from './renderer';
+const CAPACITY=1800,STRIDE=9;
+export class SplashSystem {
+  data=new Float32Array(CAPACITY*STRIDE);cursor=0;rings=Array.from({length:12},()=>({x:0,y:0,age:99,strength:0}));ringCursor=0;
+  emit(x:number,y:number,power=1){const count=Math.floor(360*power),seed=this.cursor;for(let j=0;j<count;j++){const i=(this.cursor++%CAPACITY)*STRIDE,u=hash(j,seed,11),v=hash(j,seed,14),jet=j%11,theta=jet/11*TAU+(u-.5)*.4;const spread=28+v*115*power;this.data[i]=x+(u-.5)*70*power;this.data[i+1]=y+(hash(j,8)-.5)*24;this.data[i+2]=2+v*14;this.data[i+3]=Math.cos(theta)*spread*1.6;this.data[i+4]=Math.sin(theta)*spread*.55;this.data[i+5]=(75+Math.pow(hash(j,seed,9),.55)*170)*Math.sqrt(power);this.data[i+6]=3+v*3;this.data[i+7]=this.data[i+6];this.data[i+8]=u}for(let k=0;k<3;k++){const r=this.rings[this.ringCursor++%this.rings.length];r.x=x;r.y=y;r.age=-k*.4;r.strength=power}}
+  step(dt:number,t:number,field:EnergyField){const a=this.data;for(let i=0;i<a.length;i+=STRIDE){if(a[i+6]<=0)continue;a[i+6]-=dt;const drag=Math.exp(-dt*.3);a[i+3]=a[i+3]*drag+Math.sin(t*2+a[i+8]*30)*dt*6;a[i+4]*=drag;a[i+5]-=145*dt;a[i]+=a[i+3]*dt;a[i+1]+=a[i+4]*dt;a[i+2]+=a[i+5]*dt;if(a[i+2]<0){field.inject(a[i],a[i+1],18,.12);a[i+6]=0}}for(const r of this.rings){if(r.age>8)continue;r.age+=dt;if(r.age<0)continue;const radius=r.age*64;for(let k=0;k<32;k++){const th=k/32*TAU;field.inject(r.x+Math.cos(th)*radius,r.y+Math.sin(th)*radius*.42,20,dt*r.strength*.12*Math.exp(-r.age*.45))}}}
+  draw(r:AsciiRenderer){const a=this.data;for(let i=0;i<a.length;i+=STRIDE){if(a[i+6]<=0)continue;const life=a[i+6]/a[i+7],vz=a[i+5],lum=clamp(life*(.6+a[i+8]*.5));r.put(a[i],a[i+1]-a[i+2]*.78,life<.3?'.':vz>80?(a[i+8]>.8?'|':a[i+8]>.5?'+':'*'):vz>10?'x':':',lum,life>.6?2:1);if(a[i+8]>.7&&vz>80)r.put(a[i]-a[i+3]*.015,a[i+1]-a[i+2]*.78+8,':',lum*.5,1)}for(const ring of this.rings){if(ring.age<0||ring.age>8)continue;const radius=ring.age*64;for(let k=0;k<240;k++){const th=k/240*TAU;r.put(ring.x+Math.cos(th)*radius,ring.y+Math.sin(th)*radius*.42,'.',Math.exp(-ring.age*.45)*ring.strength*.5,1)}}}
+  get alive(){let n=0;for(let i=6;i<this.data.length;i+=STRIDE)if(this.data[i]>0)n++;return n}
+}
