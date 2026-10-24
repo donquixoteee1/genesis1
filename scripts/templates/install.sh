@@ -19,7 +19,7 @@ GENESIS_ARCHIVE
 /usr/bin/unzip -q "$GENESIS_TEMP/genesis.zip" -d "$GENESIS_TEMP/unpacked"
 if [ -e "$GENESIS_ROOT" ]; then
   [ -f "$GENESIS_ROOT/GENESIS-VERSION" ] && [ "$(cat "$GENESIS_ROOT/GENESIS-VERSION")" = "$GENESIS_VERSION" ] || { echo 'Refusing to overwrite an unrelated directory.' >&2; exit 1; }
-  for entry in activate.sh preflight.sh GENESIS-VERSION GENESIS-theme.zip scripts/create-launcher.mjs scripts/patch-dream-skin.mjs scripts/dream-skin-adapter.mjs dist/dream-skin/genesis-extension.js integration/dream-skin/native.css; do
+  for entry in activate.sh preflight.sh GENESIS-VERSION GENESIS-theme.zip scripts/create-launcher.mjs scripts/patch-dream-skin.mjs scripts/dream-skin-adapter.mjs dist/dream-skin/genesis-extension.js integration/dream-skin/native.css integration/dream-skin/Genesis.icns; do
     /usr/bin/cmp -s "$GENESIS_TEMP/unpacked/genesis/$entry" "$GENESIS_ROOT/$entry" || { echo "Existing GENESIS files are incomplete or modified: $entry" >&2; exit 1; }
   done
 else
@@ -43,6 +43,7 @@ fi
 /bin/bash "$GENESIS_ROOT/preflight.sh"
 printf '\nGENESIS files are prepared at %s\n' "$GENESIS_ROOT"
 printf 'Activation enables an UNAUTHENTICATED CDP listener on 127.0.0.1 and restarts Codex after you quit it normally. Other local programs may read/control Codex through that port.\n'
+printf '启用后会新增 Genesis 皮肤启动图标；请将它拖入 Dock。以后需从 Genesis 启动，原 Codex 图标打开的是不带皮肤的普通模式。\n'
 GENESIS_APPROVED=false
 if [ "$GENESIS_PREPARE_ONLY" = true ]; then :
 elif [ "${1:-}" = --approved-cdp-restart ]; then GENESIS_APPROVED=true

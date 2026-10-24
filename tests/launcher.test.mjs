@@ -8,5 +8,7 @@ test('Genesis app launches the skin entry and never force restarts Codex',async 
  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'genesis-app-'));t.after(()=>fs.rm(dir,{recursive:true,force:true}));
  const p=spawnSync(process.execPath,['scripts/create-launcher.mjs',dir],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);
  const script=await fs.readFile(path.join(dir,'Genesis.app/Contents/MacOS/Genesis'),'utf8');assert.match(script,/start-dream-skin-macos.sh/);assert.ok(!/restart-existing|kill|launchctl/.test(script));
+ const plist=await fs.readFile(path.join(dir,'Genesis.app/Contents/Info.plist'),'utf8');assert.match(plist,/CFBundleIconFile/);
+ const icon=await fs.readFile(path.join(dir,'Genesis.app/Contents/Resources/Genesis.icns'));assert.deepEqual(icon,await fs.readFile('integration/dream-skin/Genesis.icns'));assert.match(p.stdout,/新增 Genesis/);
  assert.equal(spawnSync('/bin/bash',['-n'],{input:script}).status,0);
 });

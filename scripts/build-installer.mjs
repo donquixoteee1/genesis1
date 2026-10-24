@@ -12,7 +12,7 @@ const zip=(cwd,out,files)=>{const p=spawnSync('zip',['-q','-r',out,...files],{cw
 const theme=path.join(root,'GENESIS-theme.zip');
 zip(path.resolve('integration/dream-skin'),theme,['theme.json','theme.css','background.png']);
 const themeData=await fs.readFile(theme);
-for(const file of ['scripts/create-launcher.mjs','scripts/patch-dream-skin.mjs','scripts/dream-skin-adapter.mjs','dist/dream-skin/genesis-extension.js','integration/dream-skin/native.css']){const to=path.join(root,file);await fs.mkdir(path.dirname(to),{recursive:true});await fs.copyFile(file,to)}
+for(const file of ['scripts/create-launcher.mjs','scripts/patch-dream-skin.mjs','scripts/dream-skin-adapter.mjs','dist/dream-skin/genesis-extension.js','integration/dream-skin/Genesis.icns','integration/dream-skin/native.css']){const to=path.join(root,file);await fs.mkdir(path.dirname(to),{recursive:true});await fs.copyFile(file,to)}
 await fs.copyFile('scripts/templates/preflight.sh',path.join(root,'preflight.sh'));
 await fs.writeFile(path.join(root,'GENESIS-VERSION'),version+'\n');
 const activate=(await fs.readFile('scripts/templates/activate.sh','utf8')).replace('@@THEME_SHA256@@',()=>sha(themeData)).replace('@@THEME_BYTES@@',()=>String(themeData.length));

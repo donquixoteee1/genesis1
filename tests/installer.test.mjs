@@ -29,7 +29,7 @@ test('launcher preserves an explicit proxy and ignores disabled system proxies',
 test('installer builds cannot include leftover vendor engines or stale archive members',async t=>{
  const root=await fs.mkdtemp(path.join(os.tmpdir(),'genesis-package-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));
  const {version}=JSON.parse(await fs.readFile('package.json','utf8'));
- for(const file of ['package.json','scripts/build-installer.mjs','scripts/create-launcher.mjs','scripts/patch-dream-skin.mjs','scripts/dream-skin-adapter.mjs','integration/dream-skin/native.css','integration/dream-skin/theme.json','integration/dream-skin/theme.css','integration/dream-skin/background.png']){await fs.mkdir(path.dirname(path.join(root,file)),{recursive:true});await fs.copyFile(file,path.join(root,file))}
+ for(const file of ['package.json','scripts/build-installer.mjs','scripts/create-launcher.mjs','scripts/patch-dream-skin.mjs','scripts/dream-skin-adapter.mjs','integration/dream-skin/Genesis.icns','integration/dream-skin/native.css','integration/dream-skin/theme.json','integration/dream-skin/theme.css','integration/dream-skin/background.png']){await fs.mkdir(path.dirname(path.join(root,file)),{recursive:true});await fs.copyFile(file,path.join(root,file))}
  await fs.mkdir(path.join(root,'dist/dream-skin'),{recursive:true});await fs.writeFile(path.join(root,'dist/dream-skin/genesis-extension.js'),'// packaging-only fixture\n');
  await fs.cp('scripts/templates',path.join(root,'scripts/templates'),{recursive:true});
  const stage=path.join(root,'artifacts/installer-'+version);await fs.mkdir(path.join(stage,'genesis/vendor-engine'),{recursive:true});await fs.writeFile(path.join(stage,'genesis/vendor-engine/STALE'),'never ship');
